@@ -4,6 +4,7 @@ import io
 import re
 import uuid
 from pathlib import Path
+import os
 from typing import Dict, List, Optional
 from app.core.config import settings
 from app.core.database import db_manager
@@ -24,7 +25,9 @@ class IngestionService:
     """Service handling file upload, parsing, and DuckDB registration."""
 
     def __init__(self):
-        self.upload_dir = Path(settings.UPLOAD_DIR)
+        self.upload_dir = Path(
+            os.getenv("UPLOAD_DIR", "/tmp/busiai/uploads")
+)
         self.upload_dir.mkdir(parents=True, exist_ok=True)
         self._dataset_registry: Dict[str, DatasetInfo] = {}
 
